@@ -6,9 +6,11 @@ from .errors import (
     NotWearingMaskError,
 )
 
+
 class Cafe:
     def __init__(self, name: str) -> None:
         self.name = name
+
 
     def visit_cafe(self, visitor: dict) -> str:
         visitor_name = visitor.get("name", "Unknown")
@@ -24,9 +26,11 @@ class Cafe:
             )
         today = datetime.date.today()
         if expiration_date < today:
-            raise OutdatedVaccineError(
-                f"Visitor '{visitor_name}' vaccine expired on {expiration_date}."
+            message = (
+                f"Visitor '{visitor_name}' vaccine expired on "
+                f"{expiration_date}."
             )
+            raise OutdatedVaccineError(message)
         if not visitor.get("wearing_a_mask", False):
             raise NotWearingMaskError(
                 f"Visitor '{visitor_name}' is not wearing a mask."
