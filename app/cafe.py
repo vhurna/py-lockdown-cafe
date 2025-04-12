@@ -11,7 +11,6 @@ class Cafe:
     def __init__(self, name: str) -> None:
         self.name = name
 
-
     def visit_cafe(self, visitor: dict) -> str:
         visitor_name = visitor.get("name", "Unknown")
         if "vaccine" not in visitor:
