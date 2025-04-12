@@ -1,7 +1,8 @@
-# main.py
+# app/main.py
 
 from app.cafe import Cafe
 from app.errors import VaccineError
+
 
 def go_to_cafe(friends: list, cafe: Cafe) -> str:
     masks_to_buy = 0
@@ -9,17 +10,16 @@ def go_to_cafe(friends: list, cafe: Cafe) -> str:
         try:
             cafe.visit_cafe(friend)
         except VaccineError:
-            # Цим блоком ловимо NotVaccinatedError та OutdatedVaccineError
+            # Ловимо NotVaccinatedError та OutdatedVaccineError
             return "All friends should be vaccinated"
         except Exception:
-            # Ловимо NotWearingMaskError або інші помилки, які можуть бути пов'язані із забороною доступу
+            # Ловимо NotWearingMaskError або інші помилки
             masks_to_buy += 1
     if masks_to_buy:
         return f"Friends should buy {masks_to_buy} masks"
     return f"Friends can go to {cafe.name}"
 
 
-# --- Приклад тестування ---
 if __name__ == "__main__":
     import datetime
 
@@ -29,45 +29,55 @@ if __name__ == "__main__":
     friends1 = [
         {
             "name": "Alisa",
-            "vaccine": {"expiration_date": datetime.date.today()},
-            "wearing_a_mask": True
+            "vaccine": {
+                "expiration_date": datetime.date.today()
+            },
+            "wearing_a_mask": True,
         },
         {
             "name": "Bob",
-            "vaccine": {"expiration_date": datetime.date.today()},
-            "wearing_a_mask": True
-        }
+            "vaccine": {
+                "expiration_date": datetime.date.today()
+            },
+            "wearing_a_mask": True,
+        },
     ]
     print(go_to_cafe(friends1, cafe_instance))
-    # Очікуваний результат: "Friends can go to KFC"
+    # Очікуваний: "Friends can go to KFC"
 
     # Тест 2: Друзі не носять маски
     friends2 = [
         {
             "name": "Alisa",
-            "vaccine": {"expiration_date": datetime.date.today()},
-            "wearing_a_mask": False
+            "vaccine": {
+                "expiration_date": datetime.date.today()
+            },
+            "wearing_a_mask": False,
         },
         {
             "name": "Bob",
-            "vaccine": {"expiration_date": datetime.date.today()},
-            "wearing_a_mask": False
-        }
+            "vaccine": {
+                "expiration_date": datetime.date.today()
+            },
+            "wearing_a_mask": False,
+        },
     ]
     print(go_to_cafe(friends2, cafe_instance))
-    # Очікуваний результат: "Friends should buy 2 masks"
+    # Очікуваний: "Friends should buy 2 masks"
 
-    # Тест 3: Принаймні один друг не вакцинований
+    # Тест 3: Один друг не вакцинований
     friends3 = [
         {
             "name": "Alisa",
-            "wearing_a_mask": True
+            "wearing_a_mask": True,
         },
         {
             "name": "Bob",
-            "vaccine": {"expiration_date": datetime.date.today()},
-            "wearing_a_mask": True
-        }
+            "vaccine": {
+                "expiration_date": datetime.date.today()
+            },
+            "wearing_a_mask": True,
+        },
     ]
     print(go_to_cafe(friends3, cafe_instance))
-    # Очікуваний результат: "All friends should be vaccinated"
+    # Очікуваний: "All friends should be vaccinated"
